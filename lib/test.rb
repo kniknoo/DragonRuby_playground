@@ -1,23 +1,3 @@
-
-require 'lib/dragon_object.rb'
-require 'lib/ui_element.rb'
-require 'lib/game_math.rb'
-require 'lib/color.rb'
-require 'lib/shape.rb'
-require 'lib/test.rb'
-
-
-
-#$gtk.args.outputs.clear
-
-#$test = Solid.new
-#$testprim = [Solid.new(color: [127, 0, 127]),
-#             Label.new(text: "Ohai!"),
-#             Sprite.new(path: 'sprites/hexagon-orange.png',
-#             color: [255,255,255,127], w: 100, h: 100) ]
-
-#$test = Composite.new($testprim)
-=begin
 $sky = Shape.gradient_solid(colors: Color.gradient(INDIGO, BLACK, 40) )
 $stars = 100.times.map do
   StaticSolid.new(x: rand(1280), y: rand(320) + 400,
@@ -36,6 +16,15 @@ $bldgs = 50.times.map do
   StaticSolid.new(x: rand(1280), y: rand(40) + 280,
                   w: 20, h: rand(50) + 50, color: GRAY[10])
 end
+class Player < StaticSolid
+  def move
+      @y += 10 if @args.inputs.up
+      @y -= 10 if @args.inputs.down
+      @x -= 10 if @args.inputs.left
+      @x += 10 if @args.inputs.right
+  end
+end
+$player = Player.new(x: 640, y: 480, w: 50, h: 50, color: RED)
 
 def tick(args)
   args.outputs.background_color = [0,0,0]
@@ -52,5 +41,5 @@ def tick(args)
     end
   end
   $bldgs.each {|bldg| bldg.x -= 0.15; bldg.x = 1300 + rand(40) if bldg.x < -31}
+  $player.move
 end
-=end
